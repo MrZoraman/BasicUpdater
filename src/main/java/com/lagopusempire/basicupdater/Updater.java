@@ -10,7 +10,6 @@ import java.util.Map;
 public class Updater<T> {
     private final Map<T, Update> updates = new HashMap<>();
     
-    private final TaskExecutor executor;
     private final T currentVersion;
     
     public Updater(TaskExecutor executor, T currentVersion) {
@@ -22,7 +21,6 @@ public class Updater<T> {
             throw new IllegalArgumentException("Current version cannot be null.");
         }
         
-        this.executor = executor;
         this.currentVersion = currentVersion;
     }
     
