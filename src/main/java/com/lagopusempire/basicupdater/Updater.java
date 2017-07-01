@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Foomf
  */
 public class Updater<T> {
-    private final Map<T, Update> updates = new HashMap<>();
+    private final Map<T, Update<T>> updates = new HashMap<>();
     
     private final T currentVersion;
     
