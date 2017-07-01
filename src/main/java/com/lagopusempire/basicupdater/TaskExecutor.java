@@ -5,5 +5,5 @@ package com.lagopusempire.basicupdater;
  * @author Foomf
  */
 public interface TaskExecutor {
-    boolean executeTask(String data) throws Exception;
+    boolean executeTask(String data);
 }

@@ -1,5 +1,7 @@
 package com.lagopusempire.basicupdater;
 
+import java.util.Optional;
+
 /**
  *
  * @author Foomf
@@ -35,19 +37,20 @@ public class Update<V> {
         this.data = data;
     }
     
-    public V doUpdate(V currentVersion) throws Exception {
+    public Optional<V> doUpdate(V currentVersion) {
         if(currentVersion == null) {
             throw new IllegalArgumentException("Current version cannot be null.");
         }
         
         if(!currentVersion.equals(preReq)) {
             //TODO: this
-            throw new Exception("uh oh!");
+            //throw new Exception("uh oh!");
+            return Optional.empty();
         }
         
         executor.executeTask(data);
         
-        return output;
+        return Optional.of(output);
     }
     
     V getPreReq() {

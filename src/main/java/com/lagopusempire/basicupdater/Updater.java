@@ -2,6 +2,7 @@ package com.lagopusempire.basicupdater;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -24,18 +25,19 @@ public class Updater<V> {
         this.currentVersion = currentVersion;
     }
     
-    public V DoUpdates(V expectedVersion) throws Exception {
+    public Optional<V> DoUpdates(V expectedVersion) {
         if(expectedVersion == null) {
             throw new IllegalArgumentException("Expected version cannot be null.");
         }
         
-        V current = currentVersion;
-        while(!current.equals(expectedVersion)) {
-            Update<V> update = updates.get(current);
+        Optional<V> current = Optional.of(currentVersion);
+        while(current.isPresent() && !current.get().equals(expectedVersion)) {
+            Update<V> update = updates.get(current.get());
             if(update == null) {
-                throw new Exception("Failed to update! Update from version " + current + " needed!");
+                //throw new Exception("Failed to update! Update from version " + current + " needed!");
+                return Optional.empty();
             }
-            current = update.doUpdate(current);
+            current = update.doUpdate(current.get());
         }
         
         return current;

@@ -1,6 +1,7 @@
 package com.lagopusempire.basicupdater;
 
 import com.github.zafarkhaja.semver.Version;
+import java.util.Optional;
 
 /**
  *
@@ -19,7 +20,7 @@ public class Main implements TaskExecutor, Runnable {
         updater.addUpdate(new Update(Version.valueOf("1.0.1"), Version.valueOf("1.0.2"), this, "second update"));
         updater.addUpdate(new Update(Version.valueOf("1.0.2"), Version.valueOf("1.0.3"), this, "second update"));
         try {
-            Version version = updater.DoUpdates(Version.valueOf("1.0.3"));
+            Optional<Version> version = updater.DoUpdates(Version.valueOf("1.0.3"));
             System.out.println("Updated to version " + version);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -27,7 +28,7 @@ public class Main implements TaskExecutor, Runnable {
     }
 
     @Override
-    public boolean executeTask(String data) throws Exception {
+    public boolean executeTask(String data) {
         System.out.println("Task executed!: " + data);
         return true;
     }
