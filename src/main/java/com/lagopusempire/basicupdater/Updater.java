@@ -3,6 +3,7 @@ package com.lagopusempire.basicupdater;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -11,6 +12,8 @@ import java.util.Map;
 public class Updater<V, U> {
 
     private final Map<V, Update<V, U>> updates = new HashMap<>();
+    
+    private Optional<V> missingVersion = Optional.empty();
     
     LinkedList<U> getUpdatesTo(V currentVersion, V expectedVersion) {
         if (currentVersion == null) {
@@ -28,6 +31,7 @@ public class Updater<V, U> {
         
         Update<V, U> update = updates.get(currentVersion);
         if(update == null) {
+            missingVersion = Optional.of(currentVersion);
             throw new UpdateMissingException("Update version " + currentVersion + " missing!");
         }
         
@@ -44,5 +48,9 @@ public class Updater<V, U> {
         }
 
         updates.put(update.getPreReq(), update);
+    }
+    
+    public Optional<V> getMissingVersion() {
+        return missingVersion;
     }
 }
