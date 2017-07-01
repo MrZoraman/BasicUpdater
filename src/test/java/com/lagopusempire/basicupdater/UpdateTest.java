@@ -29,6 +29,11 @@ public class UpdateTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void testNullUpdate() {
-        new Update<>(0, 0, null);
+        new Update<>(0, 1, null);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testEqualPrereqOutput() {
+        new Update<>(0, 0, true);
     }
 }

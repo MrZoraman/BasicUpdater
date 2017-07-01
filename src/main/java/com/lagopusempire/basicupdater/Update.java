@@ -24,6 +24,11 @@ public class Update<V, U> {
             throw new IllegalArgumentException("Update cannot be null.");
         }
         
+        if(preReq.equals(output)) {
+            throw new IllegalArgumentException(
+                    "Prerequisite version cannot be the same as the result version.");
+        }
+        
         this.preReq = preReq;
         this.output = output;
         this.update = update;
