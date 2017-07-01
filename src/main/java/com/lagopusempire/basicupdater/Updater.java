@@ -32,7 +32,7 @@ public class Updater<V, U> {
         Update<V, U> update = updates.get(currentVersion);
         if(update == null) {
             missingVersion = Optional.of(currentVersion);
-            throw new UpdateMissingException("Update version " + currentVersion + " missing!");
+            throw new UpdateMissingException("Update version " + currentVersion + " is missing!");
         }
         
         V next = update.getOutput();
