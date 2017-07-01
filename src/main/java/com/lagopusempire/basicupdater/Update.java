@@ -48,7 +48,9 @@ public class Update<V> {
             return Optional.empty();
         }
         
-        executor.executeTask(data);
+        if(!executor.executeTask(data)) {
+            return Optional.empty();
+        }
         
         return Optional.of(output);
     }
