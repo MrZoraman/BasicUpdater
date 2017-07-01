@@ -1,20 +1,18 @@
 package com.lagopusempire.basicupdater;
 
-import com.github.zafarkhaja.semver.Version;
-
 /**
  *
  * @author Foomf
  */
-public class Update {
+public class Update<T> {
     private final TaskExecutor executor;
     
-    private final Version preReq;
-    private final Version output;
+    private final T preReq;
+    private final T output;
     
     private final String data;
     
-    public Update(Version preReq, Version output, TaskExecutor executor, String data) {
+    public Update(T preReq, T output, TaskExecutor executor, String data) {
         if(preReq == null) {
             throw new IllegalArgumentException("Prerequisite version cannot be null.");
         }
@@ -37,7 +35,7 @@ public class Update {
         this.data = data;
     }
     
-    public Version doUpdate(Version currentVersion) throws Exception {
+    public T doUpdate(T currentVersion) throws Exception {
         if(currentVersion == null) {
             throw new IllegalArgumentException("Current version cannot be null.");
         }
@@ -52,7 +50,7 @@ public class Update {
         return output;
     }
     
-    Version getPreReq() {
+    T getPreReq() {
         return preReq;
     }
 }
