@@ -34,15 +34,15 @@ public class Update<V, U> {
         this.update = update;
     }
     
-    V getPreReq() {
+    public V getPreReq() {
         return preReq;
     }
     
-    V getOutput() {
+    public V getOutput() {
         return output;
     }
     
-    U getUpdate() {
+    public U getUpdate() {
         return update;
     }
 }
