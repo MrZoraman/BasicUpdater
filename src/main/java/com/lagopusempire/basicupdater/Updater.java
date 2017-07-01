@@ -28,7 +28,7 @@ public class Updater<V, U> {
         
         Update<V, U> update = updates.get(currentVersion);
         if(update == null) {
-            throw new IllegalStateException("fix me");
+            throw new UpdateMissingException("Update version " + currentVersion + " missing!");
         }
         
         V next = update.getOutput();
