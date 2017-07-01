@@ -18,10 +18,10 @@ public class Main implements TaskExecutor, Runnable {
         Updater<Version> updater = new Updater(this, Version.valueOf("1.0.0"));
         updater.addUpdate(new Update(Version.valueOf("1.0.0"), Version.valueOf("1.0.1"), this, "first update"));
         updater.addUpdate(new Update(Version.valueOf("1.0.1"), Version.valueOf("1.0.2"), this, "second update"));
-        updater.addUpdate(new Update(Version.valueOf("1.0.2"), Version.valueOf("1.0.3"), this, "second update"));
+        updater.addUpdate(new Update(Version.valueOf("1.0.2"), Version.valueOf("1.0.3"), this, "third update"));
         try {
             Optional<Version> version = updater.DoUpdates(Version.valueOf("1.0.3"));
-            System.out.println("Updated to version " + version);
+            System.out.println("Updated to version " + version.get());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

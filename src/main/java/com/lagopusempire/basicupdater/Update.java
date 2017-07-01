@@ -37,15 +37,21 @@ public class Update<V> {
         this.data = data;
     }
     
+    /**
+     * Takes the current version of the system and performs an update.
+     * @param currentVersion The current version of the system
+     * @return The next version of the system, or Optional.empty() if the update failed.
+     */
     public Optional<V> doUpdate(V currentVersion) {
         if(currentVersion == null) {
             throw new IllegalArgumentException("Current version cannot be null.");
         }
         
         if(!currentVersion.equals(preReq)) {
+            throw new IllegalStateException("error!");
             //TODO: this
             //throw new Exception("uh oh!");
-            return Optional.empty();
+            //return Optional.empty();
         }
         
         if(!executor.executeTask(data)) {
