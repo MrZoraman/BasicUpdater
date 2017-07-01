@@ -1,7 +1,10 @@
 package com.lagopusempire.basicupdater;
 
 import com.github.zafarkhaja.semver.Version;
+import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  *
@@ -15,16 +18,23 @@ public class Main implements TaskExecutor, Runnable {
     
     @Override
     public void run() {
-        Updater<Version> updater = new Updater(this, Version.valueOf("1.0.0"));
-        updater.addUpdate(new Update(Version.valueOf("1.0.0"), Version.valueOf("1.0.1"), this, "first update"));
-        updater.addUpdate(new Update(Version.valueOf("1.0.1"), Version.valueOf("1.0.2"), this, "second update"));
-        updater.addUpdate(new Update(Version.valueOf("1.0.2"), Version.valueOf("1.0.3"), this, "third update"));
-        try {
-            Optional<Version> version = updater.DoUpdates(Version.valueOf("1.0.3"));
-            System.out.println("Updated to version " + version.get());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        Updater<Version, Integer> updater = new Updater();
+        updater.addUpdate(new Update(Version.valueOf("1.0.0"), Version.valueOf("1.0.1"), 1));
+        updater.addUpdate(new Update(Version.valueOf("1.0.1"), Version.valueOf("1.0.2"), 2));
+        updater.addUpdate(new Update(Version.valueOf("1.0.2"), Version.valueOf("1.0.3"), 3));
+        List<Integer> updates = updater.getUpdatesTo(Version.valueOf("1.0.0"), Version.valueOf("1.0.3"));
+        updates.forEach(System.out::println);
+        
+//        Updater<Version> updater = new Updater(this, Version.valueOf("1.0.0"));
+//        updater.addUpdate(new Update(Version.valueOf("1.0.0"), Version.valueOf("1.0.1"), this, "first update"));
+//        updater.addUpdate(new Update(Version.valueOf("1.0.1"), Version.valueOf("1.0.2"), this, "second update"));
+//        updater.addUpdate(new Update(Version.valueOf("1.0.2"), Version.valueOf("1.0.3"), this, "third update"));
+//        try {
+//            Optional<Version> version = updater.DoUpdates(Version.valueOf("1.0.3"));
+//            System.out.println("Updated to version " + version.get());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     @Override
