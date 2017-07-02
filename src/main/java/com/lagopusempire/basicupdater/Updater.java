@@ -15,8 +15,7 @@ public class Updater<V, U> {
     private final Map<V, Update<V, U>> updates = new HashMap<>();
     
     public LinkedList<U> getUpdatesTo(V currentVersion, V expectedVersion) {
-        Set<V> usedVersions = new HashSet<>();
-        return resolveUpdateOrder(currentVersion, expectedVersion, usedVersions);
+        return resolveUpdateOrder(currentVersion, expectedVersion, new HashSet<>());
     }
     
     private LinkedList<U> resolveUpdateOrder(V currentVersion, V desiredVersion, 
