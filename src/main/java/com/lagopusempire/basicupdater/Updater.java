@@ -34,12 +34,13 @@ public class Updater<V, U> {
             return new LinkedList<>();
         }
         
-        Update<V, U> update = updates.get(currentVersion);
-        if(update == null) {
+        if(!updates.containsKey(currentVersion)) {
             missingVersion = Optional.of(currentVersion);
             throw new UpdateMissingException("Update version " 
                     + currentVersion + " is missing!");
         }
+        
+        Update<V, U> update = updates.get(currentVersion);
         
         V next = update.getOutput();
         if(!usedVersions.add(next)) {
