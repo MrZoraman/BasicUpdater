@@ -49,8 +49,7 @@ public class Updater<V, U> {
         V to = update.getTo();
         
         if(usedVersions.contains(to)) {
-            throw new CircularUpdateException("Your have a loop in your updates."
-                + " Loop detected at " + currentVersion + " -> " + to + ".");
+            throw new CircularUpdateException(update);
         }
         
         LinkedList<U> updateList = resolveUpdateOrder(to, desiredVersion);
