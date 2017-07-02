@@ -1,6 +1,7 @@
 package com.lagopusempire.basicupdater;
 
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -101,5 +102,18 @@ public class UpdaterTest {
         updater.addUpdate(new Update<>('D', 'A', 4)); // D -> A, 4
         List<Integer> updates = updater.getUpdatesTo('A', 'A');
         assertTrue(updates.isEmpty());
+    }
+    
+    @Test
+    public void testOrder() {
+        Updater<Integer, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
+        updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 2
+        updater.addUpdate(new Update<>(2, 3, 3)); // 2 -> 3, 3
+        updater.addUpdate(new Update<>(3, 4, 4)); // 3 -> 4, 4
+        List<Integer> updateList = updater.getUpdatesTo(0, 4);
+        Integer[] updates = updateList.toArray(new Integer[updateList.size()]);
+        Integer[] expected = new Integer[] {1, 2, 3, 4};
+        Assert.assertArrayEquals(expected, updates);
     }
 }
