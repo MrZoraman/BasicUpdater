@@ -6,17 +6,17 @@ package com.lagopusempire.basicupdater;
  */
 public class Update<V, U> {
     
-    private final V preReq;
-    private final V output;
+    private final V from;
+    private final V to;
     
     private final U update;
     
-    public Update(V preReq, V output, U update) {
-        if(preReq == null) {
+    public Update(V from, V to, U update) {
+        if(from == null) {
             throw new IllegalArgumentException("Prerequisite version cannot be null.");
         }
         
-        if(output == null) {
+        if(to == null) {
             throw new IllegalArgumentException("Output version cannot be null.");
         }
         
@@ -24,22 +24,22 @@ public class Update<V, U> {
             throw new IllegalArgumentException("Update cannot be null.");
         }
         
-        if(preReq.equals(output)) {
+        if(from.equals(to)) {
             throw new IllegalArgumentException(
                     "Prerequisite version cannot be the same as the result version.");
         }
         
-        this.preReq = preReq;
-        this.output = output;
+        this.from = from;
+        this.to = to;
         this.update = update;
     }
     
-    public V getPreReq() {
-        return preReq;
+    public V getFrom() {
+        return from;
     }
     
-    public V getOutput() {
-        return output;
+    public V getTo() {
+        return to;
     }
     
     public U getUpdate() {

@@ -42,13 +42,13 @@ public class Updater<V, U> {
         
         Update<V, U> update = updates.get(currentVersion);
         
-        V next = update.getOutput();
-        if(!usedVersions.add(next)) {
+        V to = update.getTo();
+        if(!usedVersions.add(to)) {
             throw new CircularUpdateException("Your have a loop in your updates."
-                + " Loop detected at " + currentVersion + " -> " + next + ".");
+                + " Loop detected at " + currentVersion + " -> " + to + ".");
         }
         
-        LinkedList<U> updateQueue = getUpdatesTo(next, expectedVersion);
+        LinkedList<U> updateQueue = getUpdatesTo(to, expectedVersion);
         updateQueue.addFirst(update.getUpdate());
         
         return updateQueue;
@@ -59,7 +59,7 @@ public class Updater<V, U> {
             throw new IllegalArgumentException("Update cannot be null.");
         }
 
-        updates.put(update.getPreReq(), update);
+        updates.put(update.getFrom(), update);
     }
     
     public Optional<V> getMissingVersion() {
