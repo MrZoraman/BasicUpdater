@@ -44,7 +44,7 @@ public class Updater<V, U> {
         V next = update.getOutput();
         if(!usedVersions.add(next)) {
             throw new CircularUpdateException("Your have a loop in your updates. "
-            + " Loop detected at " + currentVersion + " -> " + next + ".");
+                + " Loop detected at " + currentVersion + " -> " + next + ".");
         }
         
         LinkedList<U> updateQueue = getUpdatesTo(next, expectedVersion);
