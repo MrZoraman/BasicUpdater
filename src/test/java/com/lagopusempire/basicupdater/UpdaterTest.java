@@ -116,4 +116,19 @@ public class UpdaterTest {
         Integer[] expected = new Integer[] {1, 2, 3, 4};
         Assert.assertArrayEquals(expected, updates);
     }
+    
+    @Test
+    public void testCircularUpdateException() {
+        Updater<Character, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>('A', 'B', 1)); // A -> B, 1
+        updater.addUpdate(new Update<>('B', 'C', 2)); // B -> C, 2
+        updater.addUpdate(new Update<>('C', 'B', 3)); // C -> B, 3
+        updater.addUpdate(new Update<>('D', 'A', 4)); // D -> A, 4
+        try {
+            updater.getUpdatesTo('A', 'D');
+        } catch (CircularUpdateException expected) {
+            assertEquals('C', expected.getCircularExceptionCause().getFrom());
+            assertEquals('B', expected.getCircularExceptionCause().getTo());
+        }
+    }
 }
