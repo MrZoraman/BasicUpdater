@@ -43,7 +43,7 @@ public class Updater<V, U> {
         
         V next = update.getOutput();
         if(!usedVersions.add(next)) {
-            throw new CircularUpdateException("Your have a loop in your updates. "
+            throw new CircularUpdateException("Your have a loop in your updates."
                 + " Loop detected at " + currentVersion + " -> " + next + ".");
         }
         
