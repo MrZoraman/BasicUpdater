@@ -14,13 +14,7 @@ public class Updater<V, U> {
 
     private final Map<V, Update<V, U>> updates = new HashMap<>();
     
-    public LinkedList<U> getUpdatesTo(V currentVersion, V expectedVersion) {
-        return resolveUpdateOrder(currentVersion, expectedVersion, new HashSet<>());
-    }
-    
-    private LinkedList<U> resolveUpdateOrder(V currentVersion, V desiredVersion, 
-            Set<V> usedVersions) {
-        
+    public LinkedList<U> getUpdatesTo(V currentVersion, V desiredVersion) {
         if (currentVersion == null) {
             throw new IllegalArgumentException("Current version cannot be null.");
         }
@@ -28,6 +22,14 @@ public class Updater<V, U> {
         if (desiredVersion == null) {
             throw new IllegalArgumentException("Expected version cannot be null.");
         }
+        
+        return resolveUpdateOrder(currentVersion, desiredVersion, new HashSet<>());
+    }
+    
+    private LinkedList<U> resolveUpdateOrder(V currentVersion, V desiredVersion, 
+            Set<V> usedVersions) {
+        assert(currentVersion != null);
+        assert(desiredVersion != null);
         
         usedVersions.add(currentVersion);
         
