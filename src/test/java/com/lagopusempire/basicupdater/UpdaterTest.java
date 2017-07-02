@@ -38,19 +38,7 @@ public class UpdaterTest {
     }
     
     @Test
-    public void testSuccessYieldsEmptyError() {
-        Updater<Integer, Integer> updater = new Updater<>();
-        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
-        updater.addUpdate(new Update<>(1, 2, 1)); // 1 -> 2, 1
-        updater.addUpdate(new Update<>(2, 3, 1)); // 2 -> 3, 1
-        updater.addUpdate(new Update<>(3, 4, 1)); // 3 -> 4, 1
-        updater.getUpdatesTo(0, 4);
-        
-        assertFalse(updater.getMissingVersion().isPresent());
-    }
-    
-    @Test
-    public void testFailureYieldsError() {
+    public void testUpdateMissingException() {
         Updater<Integer, Integer> updater = new Updater<>();
         updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
         //updater.addUpdate(new Update<>(1, 2, 1)); // 1 -> 2, 1 (missing)
@@ -58,13 +46,9 @@ public class UpdaterTest {
         updater.addUpdate(new Update<>(3, 4, 1)); // 3 -> 4, 1
         try {
             updater.getUpdatesTo(0, 4);
-        } catch (UpdateMissingException ignored) {
-            //expected
+        } catch (UpdateMissingException expected) {
+            assertEquals(1, expected.getMissingVersion());
         }
-        
-        assertTrue(updater.getMissingVersion().isPresent());
-        
-        assertEquals(1, (int) updater.getMissingVersion().get());
     }
 
     @Test(expected = IllegalArgumentException.class)

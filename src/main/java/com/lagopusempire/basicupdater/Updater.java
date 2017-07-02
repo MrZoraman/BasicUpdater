@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -15,8 +14,6 @@ public class Updater<V, U> {
 
     private final Map<V, Update<V, U>> updates = new HashMap<>();
     private final Set<V> usedVersions = new HashSet<>();
-    
-    private Optional<V> missingVersion = Optional.empty();
     
     public LinkedList<U> getUpdatesTo(V currentVersion, V expectedVersion) {
         usedVersions.clear();
@@ -40,9 +37,7 @@ public class Updater<V, U> {
         }
         
         if(!updates.containsKey(currentVersion)) {
-            missingVersion = Optional.of(currentVersion);
-            throw new UpdateMissingException("Update version " 
-                    + currentVersion + " is missing!");
+            throw new UpdateMissingException(currentVersion);
         }
         
         Update<V, U> update = updates.get(currentVersion);
@@ -63,9 +58,5 @@ public class Updater<V, U> {
         }
 
         updates.put(update.getFrom(), update);
-    }
-    
-    public Optional<V> getMissingVersion() {
-        return missingVersion;
     }
 }
