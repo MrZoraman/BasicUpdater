@@ -23,17 +23,17 @@ public class Updater<V, U> {
         return resolveUpdateOrder(currentVersion, expectedVersion);
     }
     
-    private LinkedList<U> resolveUpdateOrder(V currentVersion, V expectedVersion) {
+    private LinkedList<U> resolveUpdateOrder(V currentVersion, V desiredVersion) {
         if (currentVersion == null) {
             throw new IllegalArgumentException("Current version cannot be null.");
         }
         
-        if (expectedVersion == null) {
+        if (desiredVersion == null) {
             throw new IllegalArgumentException("Expected version cannot be null.");
         }
         
         //base case
-        if(currentVersion.equals(expectedVersion)) {
+        if(currentVersion.equals(desiredVersion)) {
             usedVersions.add(currentVersion);
             return new LinkedList<>();
         }
@@ -54,7 +54,7 @@ public class Updater<V, U> {
                 + " Loop detected at " + currentVersion + " -> " + to + ".");
         }
         
-        LinkedList<U> updateList = resolveUpdateOrder(to, expectedVersion);
+        LinkedList<U> updateList = resolveUpdateOrder(to, desiredVersion);
         updateList.addFirst(update.getUpdate());
         
         return updateList;
