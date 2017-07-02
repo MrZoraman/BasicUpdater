@@ -32,9 +32,10 @@ public class Updater<V, U> {
             throw new IllegalArgumentException("Expected version cannot be null.");
         }
         
+        usedVersions.add(currentVersion);
+        
         //base case
         if(currentVersion.equals(desiredVersion)) {
-            usedVersions.add(currentVersion);
             return new LinkedList<>();
         }
         
@@ -44,11 +45,9 @@ public class Updater<V, U> {
                     + currentVersion + " is missing!");
         }
         
-        usedVersions.add(currentVersion);
-        
         Update<V, U> update = updates.get(currentVersion);
-        
         V to = update.getTo();
+        
         if(usedVersions.contains(to)) {
             throw new CircularUpdateException("Your have a loop in your updates."
                 + " Loop detected at " + currentVersion + " -> " + to + ".");
@@ -56,7 +55,6 @@ public class Updater<V, U> {
         
         LinkedList<U> updateList = resolveUpdateOrder(to, desiredVersion);
         updateList.addFirst(update.getUpdate());
-        
         return updateList;
     }
 
