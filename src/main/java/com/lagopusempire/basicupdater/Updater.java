@@ -43,6 +43,8 @@ public class Updater<V, U> {
         }
         
         Update<V, U> update = updates.get(currentVersion);
+        //This should never be null because of the checks in addUpdate().
+        assert(update != null);
         V to = update.getTo();
         
         if(usedVersions.contains(to)) {
