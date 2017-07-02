@@ -13,14 +13,15 @@ import java.util.Set;
 public class Updater<V, U> {
 
     private final Map<V, Update<V, U>> updates = new HashMap<>();
-    private final Set<V> usedVersions = new HashSet<>();
     
     public LinkedList<U> getUpdatesTo(V currentVersion, V expectedVersion) {
-        usedVersions.clear();
-        return resolveUpdateOrder(currentVersion, expectedVersion);
+        Set<V> usedVersions = new HashSet<>();
+        return resolveUpdateOrder(currentVersion, expectedVersion, usedVersions);
     }
     
-    private LinkedList<U> resolveUpdateOrder(V currentVersion, V desiredVersion) {
+    private LinkedList<U> resolveUpdateOrder(V currentVersion, V desiredVersion, 
+            Set<V> usedVersions) {
+        
         if (currentVersion == null) {
             throw new IllegalArgumentException("Current version cannot be null.");
         }
@@ -47,7 +48,9 @@ public class Updater<V, U> {
             throw new CircularUpdateException(update);
         }
         
-        LinkedList<U> updateList = resolveUpdateOrder(to, desiredVersion);
+        LinkedList<U> updateList = resolveUpdateOrder(
+                to, desiredVersion, usedVersions);
+        
         updateList.addFirst(update.getUpdate());
         return updateList;
     }
