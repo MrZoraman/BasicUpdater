@@ -1,9 +1,11 @@
 package com.lagopusempire.basicupdater;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  *
@@ -12,6 +14,7 @@ import java.util.Optional;
 public class Updater<V, U> {
 
     private final Map<V, Update<V, U>> updates = new HashMap<>();
+    private final Set<V> usedVersions = new HashSet<>();
     
     private Optional<V> missingVersion = Optional.empty();
     
@@ -26,6 +29,8 @@ public class Updater<V, U> {
         
         //base case
         if(currentVersion.equals(expectedVersion)) {
+            usedVersions.clear();
+            usedVersions.add(currentVersion);
             return new LinkedList<>();
         }
         
@@ -37,7 +42,14 @@ public class Updater<V, U> {
         }
         
         V next = update.getOutput();
+        if(!usedVersions.add(next)) {
+            throw new CircularUpdateException("Loop!");
+        }
+        
         LinkedList<U> updateQueue = getUpdatesTo(next, expectedVersion);
+        if(!usedVersions.add(currentVersion)) {
+            throw new CircularUpdateException("Loop!");
+        }
         updateQueue.addFirst(update.getUpdate());
         
         return updateQueue;

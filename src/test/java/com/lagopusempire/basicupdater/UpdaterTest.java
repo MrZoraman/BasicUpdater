@@ -71,4 +71,35 @@ public class UpdaterTest {
         Updater<Integer, Integer> updater = new Updater<>();
         updater.addUpdate(null);
     }
+    
+    @Test(expected = CircularUpdateException.class)
+    public void testLoop() {
+        Updater<Character, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>('A', 'B', 1)); // A -> B, 1
+        updater.addUpdate(new Update<>('B', 'C', 2)); // B -> C, 2
+        updater.addUpdate(new Update<>('C', 'B', 3)); // C -> B, 3
+        updater.addUpdate(new Update<>('D', 'A', 4)); // D -> A, 4
+        updater.getUpdatesTo('A', 'D');
+    }
+    
+    @Test
+    public void testNoHarmLoop() {
+        Updater<Character, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>('A', 'B', 1)); // A -> B, 1
+        updater.addUpdate(new Update<>('B', 'C', 2)); // B -> C, 2
+        updater.addUpdate(new Update<>('C', 'D', 3)); // C -> B, 3
+        updater.addUpdate(new Update<>('D', 'A', 4)); // D -> A, 4
+        updater.getUpdatesTo('A', 'D');
+    }
+    
+    @Test
+    public void testNoUpdates() {
+        Updater<Character, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>('A', 'B', 1)); // A -> B, 1
+        updater.addUpdate(new Update<>('B', 'C', 2)); // B -> C, 2
+        updater.addUpdate(new Update<>('C', 'D', 3)); // C -> B, 3
+        updater.addUpdate(new Update<>('D', 'A', 4)); // D -> A, 4
+        List<Integer> updates = updater.getUpdatesTo('A', 'A');
+        assertTrue(updates.isEmpty());
+    }
 }
