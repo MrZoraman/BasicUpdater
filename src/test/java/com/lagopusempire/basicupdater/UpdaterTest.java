@@ -22,7 +22,7 @@ public class UpdaterTest {
         updater.addUpdate(new Update<>(3, 4, 1)); // 3 -> 4, 1
         List<Integer> updates = updater.getUpdatesTo(0, 4);
         int total = 0;
-        total = updates.stream().map(num -> num).reduce(total, Integer::sum);
+        total = updates.stream().reduce(total, Integer::sum);
         assertEquals(4, total);
     }
     
