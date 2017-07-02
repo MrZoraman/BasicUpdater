@@ -54,10 +54,10 @@ public class Updater<V, U> {
                 + " Loop detected at " + currentVersion + " -> " + to + ".");
         }
         
-        LinkedList<U> updateQueue = resolveUpdateOrder(to, expectedVersion);
-        updateQueue.addFirst(update.getUpdate());
+        LinkedList<U> updateList = resolveUpdateOrder(to, expectedVersion);
+        updateList.addFirst(update.getUpdate());
         
-        return updateQueue;
+        return updateList;
     }
 
     public void addUpdate(Update<V, U> update) {
