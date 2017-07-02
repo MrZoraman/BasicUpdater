@@ -31,7 +31,7 @@ public class UpdaterTest {
         Updater<Integer, Integer> updater = new Updater<>();
         updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
         updater.addUpdate(new Update<>(1, 2, 1)); // 1 -> 2, 1
-        //updater.addUpdate(new Update<>(2, 3, 1)); // 2 -> 3, 1 (missing)
+        //updater.addUpdate(new Update<>(2, 3, 1));  2 -> 3, 1 (missing)
         updater.addUpdate(new Update<>(3, 4, 1)); // 3 -> 4, 1
         updater.getUpdatesTo(0, 4);
     }
