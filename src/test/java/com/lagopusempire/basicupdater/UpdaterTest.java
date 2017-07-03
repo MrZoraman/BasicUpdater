@@ -97,7 +97,7 @@ public class UpdaterTest {
         updater.addUpdate(new Update<>(2, 3, 3)); // 2 -> 3, 3
         updater.addUpdate(new Update<>(3, 4, 4)); // 3 -> 4, 4
         List<Update<Integer, Integer>> updateList = updater.getUpdatesTo(0, 4);
-        Integer[] updates = (Integer[]) updateList.stream().map(p -> p.getUpdate()).toArray();
+        Object[] updates = updateList.stream().map(p -> p.getUpdate()).toArray();
         Integer[] expected = new Integer[] {1, 2, 3, 4};
         Assert.assertArrayEquals(expected, updates);
     }
