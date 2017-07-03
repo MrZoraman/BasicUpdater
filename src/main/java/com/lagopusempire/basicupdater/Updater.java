@@ -46,7 +46,7 @@ public class Updater<V, U> {
      * "directed acyclic graph" of updates provided by 
      * {@link #addUpdate(com.lagopusempire.basicupdater.Update) addUpdate()}.
      */
-    public LinkedList<Pair<V, U>> getUpdatesTo(V currentVersion, V desiredVersion) {
+    public LinkedList<Update<V, U>> getUpdatesTo(V currentVersion, V desiredVersion) {
         if (currentVersion == null) {
             throw new IllegalArgumentException("Current version cannot be null.");
         }
@@ -77,7 +77,7 @@ public class Updater<V, U> {
      * "directed acyclic graph" of updates provided by 
      * {@link #addUpdate(com.lagopusempire.basicupdater.Update) addUpdate()}.
      */
-    private LinkedList<Pair<V, U>> resolveUpdateOrder(V currentVersion, V desiredVersion, 
+    private LinkedList<Update<V, U>> resolveUpdateOrder(V currentVersion, V desiredVersion, 
             Set<V> usedVersions) {
         assert(currentVersion != null);
         assert(desiredVersion != null);
@@ -102,11 +102,11 @@ public class Updater<V, U> {
             throw new CircularUpdateException(update);
         }
         
-        LinkedList<Pair<V, U>> updateList = resolveUpdateOrder(
+        LinkedList<Update<V, U>> updateList = resolveUpdateOrder(
                 to, desiredVersion, usedVersions);
         
         //updateList.addFirst(update.getUpdate());
-        updateList.addFirst(Pair.with(currentVersion, update.getUpdate()));
+        updateList.addFirst(update);
         return updateList;
     }
 
