@@ -31,6 +31,22 @@ public class Updater<V, U> {
      */
     private final Map<V, Update<V, U>> updates = new HashMap<>();
     
+    /**
+     * This method performs the entire update process. It resolves which updates
+     * need to be run, and then executes them with the provided
+     * {@link UpdateExecutor}. Finally, it returns the latest version of the
+     * system now that the updates are done.
+     * @param currentVersion The current version of the system that needs updating.
+     * @param desiredVersion The desired version to update the system to.
+     * @param updateExecutor this is the {@link UpdateExecutor} that will run
+     * each update.
+     * @return The latest version the updater was able to reach before
+     * an error occurred. If no errors occurred, then this will be the
+     * desired version specified in the updater. If there are no updates to
+     * be run, then the optional will be empty ({@link java.util.Optional#empty()}).
+     * 
+     * @throws IllegalArgumentException if any of the arguments are null.
+     */
     public Optional<V> update(V currentVersion, V desiredVersion,
             UpdateExecutor<U> updateExecutor) {
         List<Update<V, U>> updateList = getUpdatesTo(currentVersion, desiredVersion);
@@ -144,7 +160,7 @@ public class Updater<V, U> {
      * @param updates This is the list of updates produced by the
      * {@link #getUpdatesTo(java.lang.Object, java.lang.Object) 
      * Updater.getUpdatesTo(V, V)} method.
-     * @param updateExecutor this is the {@link UpdateExecutor} that will run
+     * @param updateExecutor This is the {@link UpdateExecutor} that will run
      * each update.
      * @return The latest version the updater was able to reach before
      * an error occurred. If no errors occurred, then this will be the
