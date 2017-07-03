@@ -30,7 +30,9 @@ public class UpdateMissingException extends RuntimeException {
     /**
      * Gets the version that is missing the update. For example, if the updates
      * A -> B and C -> D are present, then this would return version B, as
-     * there is no update from B -> C.
+     * there is no update from B -> C. As exceptions cannot
+     * use generics, it will be up to the library user to cast to the
+     * correct generic type.
      * @return The last version the updater was able to get to before it reached
      * a "dead end."
      */
