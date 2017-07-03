@@ -90,4 +90,12 @@ public class Update<V, U> {
     public U getUpdate() {
         return update;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Update: ").append(from.toString())
+                .append(" -> ").append(to.toString());
+        return sb.toString();
+    }
 }
