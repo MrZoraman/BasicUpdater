@@ -1,4 +1,4 @@
-package com.lagopusempire.basicupdater.util;
+package com.lagopusempire.basicupdater;
 
 /**
  * This interface contains instructions on how to execute an update.

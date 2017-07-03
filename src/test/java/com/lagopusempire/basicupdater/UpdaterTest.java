@@ -1,6 +1,7 @@
 package com.lagopusempire.basicupdater;
 
 import java.util.List;
+import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -127,5 +128,42 @@ public class UpdaterTest {
         Object[] updates = updateList.stream().map(p -> p.getFrom()).toArray();
         Integer[] expected = new Integer[] {0, 1, 2, 3};
         Assert.assertArrayEquals(expected, updates);
+    }
+    
+    @Test
+    public void testExecuteUpdatesFail() {
+        Updater<Integer, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
+        updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 1
+        updater.addUpdate(new Update<>(2, 3, 3)); // 2 -> 3, 1
+        updater.addUpdate(new Update<>(3, 4, 4)); // 3 -> 4, 1
+        Optional<Integer> version = updater.update(0, 4, update -> update < 3);
+        assertTrue(version.isPresent());
+        int v = version.get();
+        assertEquals(2, v);
+    }
+    
+    @Test
+    public void testNoUpdatesYieldsEmpty() {
+        Updater<Integer, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
+        updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 1
+        updater.addUpdate(new Update<>(2, 3, 3)); // 2 -> 3, 1
+        updater.addUpdate(new Update<>(3, 4, 4)); // 3 -> 4, 1
+        Optional<Integer> version = updater.update(2, 2, update -> update < 3);
+        assertFalse(version.isPresent());
+    }
+    
+    @Test
+    public void testSuccessfulUpdate() {
+        Updater<Integer, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
+        updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 1
+        updater.addUpdate(new Update<>(2, 3, 3)); // 2 -> 3, 1
+        updater.addUpdate(new Update<>(3, 4, 4)); // 3 -> 4, 1
+        Optional<Integer> version = updater.update(0, 4, update -> true);
+        assertTrue(version.isPresent());
+        int v = version.get();
+        assertEquals(4, v);
     }
 }

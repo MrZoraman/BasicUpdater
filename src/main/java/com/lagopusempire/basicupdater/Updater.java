@@ -3,7 +3,9 @@ package com.lagopusempire.basicupdater;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -28,6 +30,12 @@ public class Updater<V, U> {
      * the "from" version (prerequisite), and the value is the update itself.
      */
     private final Map<V, Update<V, U>> updates = new HashMap<>();
+    
+    public Optional<V> update(V currentVersion, V desiredVersion,
+            UpdateExecutor<U> updateExecutor) {
+        List<Update<V, U>> updateList = getUpdatesTo(currentVersion, desiredVersion);
+        return executeUpdates(updateList, updateExecutor);
+    }
     
     /**
      * Gets the list of {@link com.lagopusempire.basicupdater.Update updates} 
@@ -122,5 +130,43 @@ public class Updater<V, U> {
         }
 
         updates.put(update.getFrom(), update);
+    }
+    
+    /**
+     * Runs the updates. While The 
+     * {@link com.lagopusempire.basicupdater.Updater#getUpdatesTo(
+     * java.lang.Object, java.lang.Object) Updater.getUpdatesTo()}
+     * method returns a list of updates, it does not actually run them. This
+     * class takes the list returned by that method and runs each update by
+     * passing them to the given executor's 
+     * {@link UpdateExecutor#doUpdate(java.lang.Object) UpdateExecutor.doUpdate(U)} 
+     * method.
+     * @param updates This is the list of updates produced by an
+     * {@link com.lagopusempire.basicupdater.Updater}.
+     * @param updateExecutor this is the {@link UpdateExecutor} that will run
+     * each update.
+     * @return The latest version the update runner was able to reach before
+     * an error occurred. If no errors occurred, then this will be the
+     * desired version specified in the updater. If there were no updates to
+     * be done, then the optional will be empty.
+     * 
+     * @throws IllegalArgumentException if any of the arguments are null.
+     */
+    public Optional<V> executeUpdates(List<Update<V, U>> updates, 
+            UpdateExecutor<U> updateExecutor) {
+        if(updates == null) {
+            throw new IllegalArgumentException("Updates cannot be null.");
+        }
+        
+        Optional<V> newVersion = Optional.empty();
+        for(Update<V, U> update : updates) {
+            boolean success = updateExecutor.doUpdate(update.getUpdate());
+            if(success) {
+                newVersion = Optional.of(update.getTo());
+            } else {
+                break;
+            }
+        }
+        return newVersion;
     }
 }
