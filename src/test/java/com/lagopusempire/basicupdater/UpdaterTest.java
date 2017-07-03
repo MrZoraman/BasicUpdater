@@ -1,6 +1,7 @@
 package com.lagopusempire.basicupdater;
 
 import java.util.List;
+import org.javatuples.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,9 +22,9 @@ public class UpdaterTest {
         updater.addUpdate(new Update<>(1, 2, 1)); // 1 -> 2, 1
         updater.addUpdate(new Update<>(2, 3, 1)); // 2 -> 3, 1
         updater.addUpdate(new Update<>(3, 4, 1)); // 3 -> 4, 1
-        List<Integer> updates = updater.getUpdatesTo(0, 4);
+        List<Pair<Integer, Integer>> updates = updater.getUpdatesTo(0, 4);
         int total = 0;
-        total = updates.stream().reduce(total, Integer::sum);
+        total = updates.stream().map(p -> p.getValue1()).reduce(total, Integer::sum);
         assertEquals(4, total);
     }
     
@@ -84,7 +85,7 @@ public class UpdaterTest {
         updater.addUpdate(new Update<>('B', 'C', 2)); // B -> C, 2
         updater.addUpdate(new Update<>('C', 'D', 3)); // C -> B, 3
         updater.addUpdate(new Update<>('D', 'A', 4)); // D -> A, 4
-        List<Integer> updates = updater.getUpdatesTo('A', 'A');
+        List<Pair<Character, Integer>> updates = updater.getUpdatesTo('A', 'A');
         assertTrue(updates.isEmpty());
     }
     
@@ -95,8 +96,8 @@ public class UpdaterTest {
         updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 2
         updater.addUpdate(new Update<>(2, 3, 3)); // 2 -> 3, 3
         updater.addUpdate(new Update<>(3, 4, 4)); // 3 -> 4, 4
-        List<Integer> updateList = updater.getUpdatesTo(0, 4);
-        Integer[] updates = updateList.toArray(new Integer[updateList.size()]);
+        List<Pair<Integer, Integer>> updateList = updater.getUpdatesTo(0, 4);
+        Object[] updates = updateList.stream().map(p -> p.getValue0()).toArray();
         Integer[] expected = new Integer[] {1, 2, 3, 4};
         Assert.assertArrayEquals(expected, updates);
     }
