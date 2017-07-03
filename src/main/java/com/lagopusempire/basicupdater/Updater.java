@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-import org.javatuples.Pair;
 
 /**
  * This class takes a list of {@link com.lagopusempire.basicupdater.Update updates}
