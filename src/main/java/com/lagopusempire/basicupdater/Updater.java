@@ -134,21 +134,22 @@ public class Updater<V, U> {
     
     /**
      * Runs the updates. While The 
-     * {@link com.lagopusempire.basicupdater.Updater#getUpdatesTo(
-     * java.lang.Object, java.lang.Object) Updater.getUpdatesTo()}
+     * {@link #getUpdatesTo(java.lang.Object, java.lang.Object) 
+     * Updater.getUpdatesTo(V, V)}
      * method returns a list of updates, it does not actually run them. This
      * class takes the list returned by that method and runs each update by
      * passing them to the given executor's 
      * {@link UpdateExecutor#doUpdate(java.lang.Object) UpdateExecutor.doUpdate(U)} 
      * method.
-     * @param updates This is the list of updates produced by an
-     * {@link com.lagopusempire.basicupdater.Updater}.
+     * @param updates This is the list of updates produced by the
+     * {@link #getUpdatesTo(java.lang.Object, java.lang.Object) 
+     * Updater.getUpdatesTo(V, V)} method.
      * @param updateExecutor this is the {@link UpdateExecutor} that will run
      * each update.
-     * @return The latest version the update runner was able to reach before
+     * @return The latest version the updater was able to reach before
      * an error occurred. If no errors occurred, then this will be the
-     * desired version specified in the updater. If there were no updates to
-     * be done, then the optional will be empty.
+     * desired version specified in the updater. If there are no updates to
+     * be run, then the optional will be empty ({@link java.util.Optional#empty()}).
      * 
      * @throws IllegalArgumentException if any of the arguments are null.
      */
