@@ -2,6 +2,7 @@ package com.lagopusempire.basicupdater.util;
 
 import com.lagopusempire.basicupdater.Update;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -14,20 +15,16 @@ public class UpdateRunner<V, U> {
         this.updateExecutor = updateExecutor;
     }
     
-    public V executeUpdates(V currentVersion, List<Update<V, U>> updates) {
-        if(currentVersion == null) {
-            throw new IllegalArgumentException("Current version cannot be null.");
-        }
-        
+    public Optional<V> executeUpdates(List<Update<V, U>> updates) {
         if(updates == null) {
             throw new IllegalArgumentException("Updates cannot be null.");
         }
         
-        V newVersion = currentVersion;
+        Optional<V> newVersion = Optional.empty();
         for(Update<V, U> update : updates) {
             boolean success = updateExecutor.doUpdate(update.getUpdate());
             if(success) {
-                newVersion = update.getTo();
+                newVersion = Optional.of(update.getTo());
             } else {
                 break;
             }
