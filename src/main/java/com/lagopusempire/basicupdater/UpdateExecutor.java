@@ -15,8 +15,13 @@ public interface UpdateExecutor<U> {
      * Performs the update.
      * @param update The update to execute.
      * @return True if the update executed successfully, false if the update failed.
-     * If this method returns false, then the {@link UpdateRunner} will halt
+     * If this method returns false, then the {@link Updater} will halt
      * and return the version the system is at before this update executes.
+     * 
+     * @see Updater#executeUpdates(java.util.List, com.lagopusempire.basicupdater.UpdateExecutor) 
+     * Updater.executeUpdates()
+     * @see Updater#update(java.lang.Object, java.lang.Object, com.lagopusempire.basicupdater.UpdateExecutor)
+     * Updater.update()
      */
     boolean doUpdate(U update);
 }
