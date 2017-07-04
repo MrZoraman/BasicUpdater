@@ -139,13 +139,27 @@ public class Updater<V, U> {
      * updater will use to organize the updates into the correct order.
      * 
      * @throws IllegalArgumentException If the update is null.
+     * @throws DuplicateUpdateException If there are two updates added that
+     * both start from the same initial version, then this exception will
+     * be thrown. Think of this class as a fancy linked list. It does not
+     * support parallel updates. Note that when this exception is thrown,
+     * it removes both the update that was already added and the update
+     * that was attempted to be added. It is up to the handler of this
+     * exception to decide which update to add.
      */
     public void addUpdate(Update<V, U> update) {
         if (update == null) {
             throw new IllegalArgumentException("Update cannot be null.");
         }
+        
+        V from = update.getFrom();
+        
+        if(updates.containsKey(from)) {
+            updates.remove(from);
+            throw new DuplicateUpdateException(updates.get(from), update);
+        }
 
-        updates.put(update.getFrom(), update);
+        updates.put(from, update);
     }
     
     /**
