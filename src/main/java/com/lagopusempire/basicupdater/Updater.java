@@ -155,8 +155,7 @@ public class Updater<V, U> {
         V from = update.getFrom();
         
         if(updates.containsKey(from)) {
-            updates.remove(from);
-            throw new DuplicateUpdateException(updates.get(from), update);
+            throw new DuplicateUpdateException(updates.remove(from), update);
         }
 
         updates.put(from, update);
