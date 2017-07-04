@@ -166,4 +166,56 @@ public class UpdaterTest {
         int v = version.get();
         assertEquals(4, v);
     }
+    
+    @Test(expected = DuplicateUpdateException.class)
+    public void testAddDuplicateUpdates() {
+        Updater<Integer, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
+        updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 1
+        updater.addUpdate(new Update<>(1, 3, 3)); // 2 -> 3, 1
+        updater.addUpdate(new Update<>(3, 4, 4)); // 3 -> 4, 1
+    }
+    
+    @Test
+    public void testAddDuplicateUpdateExceptionReAddFirst() {
+        Updater<Integer, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
+        try {
+            updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 1
+            updater.addUpdate(new Update<>(1, 3, 3)); // 2 -> 3, 1
+        } catch (DuplicateUpdateException expected) {
+            updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 1
+        }
+    }
+    
+    @Test
+    public void testAddDuplicateUpdateExceptionReAddSecond() {
+        Updater<Integer, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
+        try {
+            updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 1
+            updater.addUpdate(new Update<>(1, 3, 3)); // 2 -> 3, 1
+        } catch (DuplicateUpdateException expected) {
+            updater.addUpdate(new Update<>(1, 3, 3)); // 2 -> 3, 1
+        }
+    }
+    
+    @Test
+    public void testAddDuplicateUpdateExceptionData() {
+        Updater<Integer, Integer> updater = new Updater<>();
+        updater.addUpdate(new Update<>(0, 1, 1)); // 0 -> 1, 1
+        try {
+            updater.addUpdate(new Update<>(1, 2, 2)); // 1 -> 2, 1
+            updater.addUpdate(new Update<>(1, 3, 3)); // 2 -> 3, 1
+        } catch (DuplicateUpdateException expected) {
+            Update<Integer, Integer> first = 
+                    (Update<Integer, Integer>) expected.getPresentUpdate();
+            Update<Integer, Integer> second = 
+                    (Update<Integer, Integer>) expected.getAttemptedUpdateAddition();
+            assertEquals(1, (int) first.getFrom());
+            assertEquals(1, (int) second.getFrom());
+            assertEquals(2, (int) first.getTo());
+            assertEquals(3, (int) second.getTo());
+        }
+    }
 }
